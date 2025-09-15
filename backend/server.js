@@ -35,12 +35,25 @@ const limiter = rateLimit({
 app.use('/api/', limiter);
 
 // CORS configuration
+// app.use(cors({
+//   origin: process.env.NODE_ENV === 'production' 
+//     ? ['https://your-production-domain.com'] 
+//     : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173'],
+//   credentials: true
+// }));
+
+
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-production-domain.com'] 
+    ? ['https://social-media-analyser-ufe4.vercel.app'] 
     : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173'],
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Body parser middleware
 app.use(express.json({ limit: '10mb' }));
